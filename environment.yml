@@ -8,4 +8,5 @@ dependencies:
   - pyyaml=5.3
   - pytest=5.4
   - pytest-cov=2.8
+  - pylint=2.5
 
