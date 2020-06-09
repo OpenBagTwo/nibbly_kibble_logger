@@ -34,8 +34,6 @@ boot.
 
 ## Installation
 
-_Note: pending_
-
 To install this application, clone the repo, create a virtual environment
 based around Python 3 and, from the project root and your virtual environment,
 run
@@ -56,9 +54,50 @@ $ conda env create
 ```
 
 ### Testing
-_TODO_
+You can make sure this package is working by running its test suite using
+[`py.test`](https://docs.pytest.org/en/stable/). After installing `pytest` (and
+`pytest-cov` if you'd like) via `pip` or `conda`, navigate to the project
+root and run:
+```bash
+$ py.test
+```
 
-## Usage
+## How To Use
 
-_TODO_
+The syntax to run the logger server is:
 
+```bash
+$ nibbly_kibble_logger RECORD_FILE run [--port PORT]
+```
+
+where `RECORD_FILE` is the path (relative or absolute) to the file you want to
+use for race logging. If the file already exists, it will be appended, but if
+you specify a filename in a directory which does not exist, you'll get an error.
+
+### Logging API
+The logger server accepts POST requests to the `api/record` end-point. The
+posted data can either be plain text (should just be the drag time) or JSON,
+which can contain additional metadta.
+
+### Example Usage
+
+1. Start the server:
+```bash
+$ nibbly_kibble_logger ~/Desktop/racetimes.log run --port 7654
+```
+
+2. In a new terminal, post data using [curl](https://curl.haxx.se/)
+```bash
+$ curl -d '6.23' -H "Content-Type: text/plain" -X POST http://localhost:7654/api/record
+$ curl -d '{"drag_time":"5.95", "lane 1":"mustang", "lane 2":"camaro", "winning lane":"2", "loser status":"finish"}' -H "Content-Type: application/json" -X POST http://localhost:7654/api/record
+```
+
+3. Kill the server using Ctrl-C! This flask app is horribly insecure. Do not
+leave it running!
+
+3. View your logs:
+```bash
+$ cat ~/Desktop/racetimes.log
+{"drag time": 6.23, "timestamp": "2020-06-08 21:49:40"}
+{"drag_time": "5.95", "lane 1": "mustang", "lane 2": "camaro", "winning lane": "2", "loser status": "finish", "timestamp": "2020-06-08 21:49:44"}
+```
