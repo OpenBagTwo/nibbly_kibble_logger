@@ -23,21 +23,18 @@ class TestForgottenLogPath:
 class TestLogPathHandling:
 
     def test_log_file_need_not_exist(self, tmpdir):
-
         filename = str(tmpdir.join('my_awesome_log.log'))
 
         context = app.cli.make_context('nibbly_kibble_logger', [filename, 'run'])
         assert context.params['record_filename'] == filename
 
     def test_log_file_is_absolute_path(self):
-
         filename = 'my_awesome_log.log'
 
         context = app.cli.make_context('nibbly_kibble_logger', [filename, 'run'])
         assert context.params['record_filename'] == os.path.abspath(filename)
 
     def test_log_file_must_be_writable(self, monkeypatch):
-
         # This is inherently fragile to click changing how it checks for writability.
         # For example, I consider it to be a bug that it assumes that all files that do not exist
         # are writable.
@@ -56,7 +53,6 @@ class TestLogPathHandling:
     @pytest.mark.xfail(reason="click really does expanduser, but I guess not when calling through "
                               "a CliRunner?")
     def test_log_file_can_use_tilde(self, monkeypatch):
-
         filename = '~/my_awesome_log.log'
 
         script_infos = []
