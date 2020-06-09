@@ -9,9 +9,13 @@ setup(name='nibbly_kibble_logger',
       license='GPL v3',
       install_requires=[
             "flask>=1.1",
-            "click>=5",
+            "Click>=5",
             "pyyaml>=5",
       ],
+      entry_points='''
+          [console_scripts]
+          nibbly_kibble_logger=nibbly_kibble_logger.app:cli
+      ''',
       include_package_data=True,
       version=versioneer.get_version(),
       cmdclass=versioneer.get_cmdclass())
