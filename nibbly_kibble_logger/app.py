@@ -32,7 +32,7 @@ def create_app(script_info):
             I shudder to think how this would function in a multithreaded setting.
 
         """
-        timestamp = dt.datetime.now().strftime('%Y-%M-%D %H:%m:%S')
+        timestamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         try:
             if request.headers['Content-Type'] == 'text/plain':
 
