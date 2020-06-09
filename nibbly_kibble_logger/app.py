@@ -22,7 +22,7 @@ def create_app(script_info):
     app.config['RECORD_FILE'] = script_info.record_filename
 
     @app.route('/api/record', methods=['POST'])
-    def record_race():
+    def record_race():  # pylint: disable=W0612
         """Write POSTed race data to file. The POSTed data can either be:
 
         - plaintext, in which case it is assumed that the data is just the race time
@@ -41,7 +41,7 @@ def create_app(script_info):
                 record = request.get_json()
             else:
                 abort(400)
-        except:  # noqa
+        except:  # noqa pylint: disable=W0702
             abort(400)
 
         record['timestamp'] = timestamp
@@ -55,7 +55,8 @@ def create_app(script_info):
     return app
 
 
-@click.argument('record_filename', type=click.Path(dir_okay=False, writable=True, resolve_path=True))
+@click.argument('record_filename', type=click.Path(dir_okay=False, writable=True,
+                                                   resolve_path=True))
 @click.group(cls=FlaskGroup, create_app=create_app)
 @pass_script_info
 def cli(script_info, record_filename):
@@ -69,6 +70,3 @@ def cli(script_info, record_filename):
         raise FileNotFoundError('The specified log path points to a directory which does not exist '
                                 'or to which you cannot write.')
     script_info.record_filename = record_filename
-
-
-
